@@ -1,6 +1,7 @@
 require('dotenv').config();
 const WebSocketClient = require('websocket').client;
 const parseMessage = require('./parsemessage.js');
+const handleChatCommand = require('./handlechatcommand.js');
 
 console.log(parseMessage)
 const client = new WebSocketClient();
@@ -79,6 +80,12 @@ client.on('connect', function(connection) {
                             else if ('You don’t have permission to perform that action' === parsedMessage.parameters) {
                                 console.log(`No permission. Check if the access token is still valid. Left ${channel}`);
                                 connection.sendUTF(`PART ${channel}`);
+                            }
+                            break;
+                        case 'PRIVMSG':
+                            // Handle chat commands.
+                            if (parsedMessage.parameters.startsWith('!')) {
+                                handleChatCommand(connection, parsedMessage)
                             }
                             break;
                         default:
