@@ -85,7 +85,7 @@ client.on('connect', function(connection) {
                         case 'PRIVMSG':
                             // Handle chat commands.
                             if (parsedMessage.parameters.startsWith('!')) {
-                                handleChatCommand(connection, parsedMessage)
+                                handleChatCommand({connection, channel}, parsedMessage)
                             }
                             break;
                         default:
@@ -99,4 +99,3 @@ client.on('connect', function(connection) {
 });
 
 client.connect('ws://irc-ws.chat.twitch.tv:80');
-
